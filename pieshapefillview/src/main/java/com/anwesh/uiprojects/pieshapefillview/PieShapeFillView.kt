@@ -212,4 +212,13 @@ class PieShapeFillView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    companion object {
+
+        fun create(activity : Activity) : PieShapeFillView {
+            val view : PieShapeFillView = PieShapeFillView(activity)
+            activity.setContentView(view)
+            return view
+        }
+    }
 }
