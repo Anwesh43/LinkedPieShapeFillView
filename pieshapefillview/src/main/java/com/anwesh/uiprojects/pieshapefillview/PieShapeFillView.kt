@@ -13,7 +13,6 @@ import android.graphics.Canvas
 import android.graphics.Color
 
 val nodes : Int = 5
-val lines : Int = 4
 val scGap : Float = 0.02f
 val strokeFactor : Float = 90f
 val sizeFactor : Float = 2.9f
@@ -41,7 +40,7 @@ fun Canvas.drawPieLeg(i : Int, scale : Float, size : Float, paint : Paint) {
 }
 
 fun Canvas.drawPieShapeFill(scale : Float, size : Float, paint : Paint) {
-    for (j in 0..1) {
+    for (j in 0..(parts - 1)) {
         drawPieLeg(j, scale, size, paint)
     }
     val sf : Float = scale.sinify()
@@ -63,14 +62,16 @@ fun Canvas.drawPSFNode(i : Int, scale : Float, paint : Paint) {
 
 class PieShapeFillView(ctx : Context) : View(ctx) {
 
-    override fun onDraw(canvas : Canvas) {
+    private val renderer : Renderer = Renderer(this)
 
+    override fun onDraw(canvas : Canvas) {
+        renderer.render(canvas)
     }
 
     override fun onTouchEvent(event : MotionEvent) : Boolean {
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
-
+                renderer.handleTap()
             }
         }
         return true
@@ -193,8 +194,9 @@ class PieShapeFillView(ctx : Context) : View(ctx) {
 
         private val animator : Animator = Animator(view)
         private val psf : PieShapeFill = PieShapeFill(0)
+        private val paint : Paint = Paint(Paint.ANTI_ALIAS_FLAG)
 
-        fun render(canvas : Canvas, paint : Paint) {
+        fun render(canvas : Canvas) {
             canvas.drawColor(backColor)
             psf.draw(canvas, paint)
             animator.animate {
