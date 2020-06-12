@@ -188,4 +188,26 @@ class PieShapeFillView(ctx : Context) : View(ctx) {
             curr.startUpdating(cb)
         }
     }
+
+    data class Renderer(var view : PieShapeFillView) {
+
+        private val animator : Animator = Animator(view)
+        private val psf : PieShapeFill = PieShapeFill(0)
+
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(backColor)
+            psf.draw(canvas, paint)
+            animator.animate {
+                psf.update {
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            psf.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }
