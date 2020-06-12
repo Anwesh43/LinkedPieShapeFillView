@@ -13,14 +13,15 @@ import android.graphics.Canvas
 import android.graphics.Color
 
 val nodes : Int = 5
-val scGap : Float = 0.02f
+val parts : Int = 2
+val scGap : Float = 0.02f / parts
 val strokeFactor : Float = 90f
 val sizeFactor : Float = 2.9f
 val colors : Array<String> = arrayOf("#4CAF50", "#FF5722", "#3F51B5", "#009688", "#9C27B0")
 val backColor : Int = Color.parseColor("#BDBDBD")
 val delay : Long = 20
 val rot : Float = 15f
-val parts : Int = 2
+
 
 fun Int.inverse() : Float = 1f / this
 fun Float.maxScale(i : Int, n : Int) : Float = Math.max(0f, this - i * n.inverse())
@@ -35,7 +36,7 @@ fun Canvas.drawPieLeg(i : Int, scale : Float, size : Float, paint : Paint) {
     val xEnd : Float = size * (1 - i) + size * i * sfi
     save()
     rotate(rot * si)
-    drawLine(xStart, 0f, xEnd, 0f, paint)
+    drawLine(0f, xStart, 0f, xEnd, paint)
     restore()
 }
 
