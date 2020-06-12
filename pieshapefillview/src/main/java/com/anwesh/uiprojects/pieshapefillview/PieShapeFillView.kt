@@ -123,4 +123,46 @@ class PieShapeFillView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    data class PSFNode(var i : Int, val state : State = State()) {
+
+        private var prev : PSFNode? = null
+        private var next : PSFNode? = null
+
+        init {
+            addNeighbor()
+        }
+
+        fun addNeighbor() {
+            if (i < nodes - 1) {
+                next = PSFNode(i + 1)
+                next?.prev = this
+            }
+        }
+
+        fun draw(canvas : Canvas, paint : Paint) {
+            canvas.drawPSFNode(i, state.scale, paint)
+        }
+
+        fun update(cb : (Float) -> Unit) {
+            state.update(cb)
+        }
+
+        fun startUpdating(cb : () -> Unit) {
+            state.startUpdating(cb)
+        }
+
+        fun getNext(dir : Int, cb : () -> Unit) : PSFNode {
+            var curr : PSFNode? = prev
+            if (dir == 1) {
+                curr = next
+            }
+            if (curr != null) {
+                return curr
+            }
+            cb()
+            return this
+        }
+
+    }
 }
