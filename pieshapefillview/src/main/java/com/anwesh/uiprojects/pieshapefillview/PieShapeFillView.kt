@@ -21,3 +21,8 @@ val colors : Array<String> = arrayOf("#4CAF50", "#FF5722", "#3F51B5", "#009688",
 val backColor : Int = Color.parseColor("#BDBDBD")
 val delay : Long = 20
 val rot : Float = 15f
+
+fun Int.inverse() : Float = 1f / this
+fun Float.maxScale(i : Int, n : Int) : Float = Math.max(0f, this - i * n.inverse())
+fun Float.divideScale(i : Int, n : Int) : Float = Math.min(n.inverse(), maxScale(i, n)) * n
+fun Float.sinify() : Float = Math.sin(this * Math.PI).toFloat()
